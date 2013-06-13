@@ -59,7 +59,8 @@ vnoremap > >gv
 
 "Color Scheme
 "wget -o ~/.vim/colors/wombat256mod.vim http://www.vim.org/scripts/download_script.php?src_id=13400
-color murphy 
+set t_Co=16
+color wombat256mod
 
 "Enable syntax highlighting
 syntax enable
@@ -101,12 +102,6 @@ map <Leader>b import ipdb as pdb; pdb.set_trace()<esc>:w<CR>
 "
 call pathogen#infect()
 call pathogen#helptags()
-
-"Colorscheme : Solarized
-"set background=dark
-"set t_Co=16
-"let g:solarized_termcolors=16
-"colorscheme solarized
 
 "Set up Powerline
 "Clone in ~/.vim/bundle
