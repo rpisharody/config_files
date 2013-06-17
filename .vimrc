@@ -67,8 +67,7 @@ syntax enable
 filetype off
 filetype plugin indent on
 
-"Showing line numbers and setting length
-set number  "Show line numbers
+"Setting length
 set tw=79
 set nowrap  "Do not automatically wrap on load
 set fo-=t   "Do not automaticaly wrap text while typing
@@ -89,6 +88,21 @@ set softtabstop=4
 set shiftwidth=4
 set shiftround
 set expandtab
+
+"=========================================================================
+"Custom Function to toggle absolute/relative line numbering
+"=========================================================================
+function! NumberToggle()
+    if(&relativenumber == 1)
+        set number
+    else
+        set relativenumber
+    endif
+endfunc
+"=========================================================================
+"Set up a shortcut to activate the function
+set number
+nnoremap <Leader>r :call NumberToggle()<cr>
 
 "Python Debugging using ipdb
 map <Leader>b import ipdb as pdb; pdb.set_trace()<esc>:w<CR>
