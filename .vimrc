@@ -1,8 +1,27 @@
 
 "Custom .vimrc file developed by Rahul Pisharody
+"================================================
+set showmode
+set visualbell
+set ttyfast
+set ruler
+"Highlight the Current Line
+set cursorline
+
+"Not compatible with the old vi
+set nocompatible
 
 "Automatic reloading of .vimrc
 autocmd! bufwritepost .vimrc source % 
+
+"Apparently, the default Vim Regex is broken. Perl/Python formatting will
+"work
+nnoremap / /\v
+vnoremap / /\v
+
+"Set buffer Hidden. This means that you can have unwritten changes to a file
+"Open a new file with :e without being forced to write/undo your changes
+set hidden
 
 "Setting proper working of backspace key
 set bs=2
@@ -19,6 +38,9 @@ set clipboard=unnamed
 "Rebind <Leader> key
 let mapleader = ","
 
+"Set smart indentation
+set smartindent
+
 "Searching and highlighting
 set ignorecase
 set smartcase
@@ -27,6 +49,16 @@ set incsearch
 noremap <C-n> :nohl<CR>
 vnoremap <C-n> :nohl<CR>
 inoremap <C-n> :nohl<CR>
+
+"Vimwiki bindings
+map <Leader>pp <Esc>i<br><Esc>
+map <F4> :VimwikiAll2HTML<cr>
+
+"Select all text in the current buffer
+map <Leader>a ggVG
+
+"To Draw a line with '=' of the same width as the previous line
+nnoremap <Leader>1 yypVr=
 
 "Quicksave command
 noremap <C-Z> :update<CR>
@@ -61,6 +93,7 @@ vnoremap > >gv
 "wget -o ~/.vim/colors/wombat256mod.vim http://www.vim.org/scripts/download_script.php?src_id=13400
 set t_Co=16
 color wombat256mod
+"color mustang
 
 "Enable syntax highlighting
 syntax enable
@@ -104,6 +137,7 @@ endfunc
 set number
 nnoremap <Leader>r :call NumberToggle()<cr>
 
+
 "Python Debugging using ipdb
 map <Leader>b import ipdb as pdb; pdb.set_trace()<esc>:w<CR>
 
@@ -116,6 +150,9 @@ map <Leader>b import ipdb as pdb; pdb.set_trace()<esc>:w<CR>
 "
 call pathogen#infect()
 call pathogen#helptags()
+
+"Mapping NERDTree to <F2>
+map <F3> :NERDTree<cr>
 
 "Set up Powerline
 "Clone in ~/.vim/bundle
