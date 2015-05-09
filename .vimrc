@@ -1,74 +1,87 @@
+" Custom .vimrc for use by Rahul Pisharody
+" ========================================
 
-"Custom .vimrc file developed by Rahul Pisharody
-"================================================
-set showmode
+" Break away from vi behavior. Use vim behavior
+set nocompatible
+" Some general vim niceities !
 set visualbell
 set ttyfast
 set ruler
-"Highlight the Current Line
-set cursorline
+set number
+syntax enable
+filetype plugin indent on
+set incsearch
+set ignorecase
+set hlsearch
+set smartcase
+set smartindent
+set expandtab
+set shiftwidth=4
+set tabstop=4
+set softtabstop=4
 
-"Not compatible with the old vi
-set nocompatible
+" Make vim work as expected during fast keypresses :P
+ca Q q
+ca Wq wq
+ca W w
+ca WQ wq
+ca q1 q!
+ca Q1 q!
+ca Qa qa
 
-"Automatic reloading of .vimrc
-autocmd! bufwritepost .vimrc source % 
+" Rebind <leader> ley to ,
+let mapleader = ","
 
-"Apparently, the default Vim Regex is broken. Perl/Python formatting will
-"work
-nnoremap / /\v
-vnoremap / /\v
+" Reload .vimrc when the file is saved
+autocmd! bufwritepost .vimrc source %
+
+" Wildcards while navigating help menu
+set wildmenu
 
 "Set buffer Hidden. This means that you can have unwritten changes to a file
 "Open a new file with :e without being forced to write/undo your changes
 set hidden
 
-"Setting proper working of backspace key
-set bs=2
+" Set backspace key to work as expected in all other applications
+set backspace=2
 
-"Turn on mouse support in vim
-set mouse=a
+" Natural splitting in vim
+set splitbelow
+set splitright
 
+" ===================================================================
+" From https://github.com/csswizardry/dotfiles/blob/master/.vimrc
+" Start scrolling at 3 lines before bottom and 5 chars before right
+set scrolloff=3
+set sidescrolloff=5
+" Scrolling sideways, scroll one character at a time
+set sidescroll=1
+" Always, always show a status line. Plays well with vim-airline
+set laststatus=2
+" ===================================================================
+
+" Set the width of the term window
+set tw=79
+set fo-=t
+highlight ColorColumn ctermbg=233
+
+" vim undo history settings
+set history=700
+set undolevels=700
+
+" Custom Keymappings
+" ------------------
+" Useful when working with vimdiff. Lockdown one window while scrolling the other
+nmap <F5> :windo set scrollbind!<CR>
+" ,r triggers the 'set number' setting
+nmap <leader>r :set number!<CR>
 "Better copy & paste
 nnoremap <F2> :set invpaste paste?<CR>
 set pastetoggle=<F2>
-set showmode
-set clipboard=unnamed
-
-"Rebind <Leader> key
-let mapleader = ","
-
-"Set smart indentation
-set smartindent
-
-"Searching and highlighting
-set ignorecase
-set smartcase
-set hlsearch
-set incsearch
-noremap <C-n> :nohl<CR>
-vnoremap <C-n> :nohl<CR>
-inoremap <C-n> :nohl<CR>
-
-"Vimwiki bindings
-map <Leader>pp <Esc>i<br><Esc>
-map <F4> :VimwikiAll2HTML<cr>
-
-"Select all text in the current buffer
-map <Leader>a ggVG
-
-"To Draw a line with '=' of the same width as the previous line
-nnoremap <Leader>1 yypVr=
-
-"Quicksave command
-noremap <C-Z> :update<CR>
-vnoremap <C-Z> <C-C>:update<CR>
-inoremap <C-Z> <C-O>:update<CR>
-
-"Quick quit command
-noremap <Leader>e <esc>:quit<CR>    "Quit current window
-noremap <Leader>E <esc>:qa!<CR>     "Quit all windows
-
+" Highlight the current line ?
+noremap <leader>c :set cursorline!<CR>
+" Turn off highlighting after searches
+map <C-n> :nohl<CR>
 "Bind Ctrl+<movement> keys to move around the windows/tabs
 map <C-j> <C-w>j
 map <C-h> <C-w>h
@@ -76,109 +89,41 @@ map <C-k> <C-w>k
 map <C-l> <C-w>l
 map <Leader>n <esc>:tabprevious<CR>
 map <Leader>m <esc>:tabnext<CR>
-
+map <Leader>w <esc>:set wrap!<CR>
 "Sizing the split Windows
 map <Leader>= <C-w>=
-map <Leader>- <C-w>-
-map <Leader>0 <C-w>+
+map <Leader>[ <C-w>-
+map <Leader>] <C-w>+
 
-"Map sort function to a key
-vnoremap <Leader>s :sort<CR>
+if &listchars ==# 'eol:$'
+  set listchars=tab:>\ ,trail:-,extends:>,precedes:<,nbsp:+
+endif
+if &t_Co == 8 && $TERM !~# '^linux'
+  set t_Co=16
+endif
 
-"Easier indenting of codeblocks
-vnoremap < <gv
-vnoremap > >gv
-
-"Color Scheme
-"wget -o ~/.vim/colors/wombat256mod.vim http://www.vim.org/scripts/download_script.php?src_id=13400
-set t_Co=16
-color wombat256mod
-"color mustang
-
-"Enable syntax highlighting
-syntax enable
-filetype off
-filetype plugin indent on
-
-"Setting length
-set tw=79
-set nowrap  "Do not automatically wrap on load
-set fo-=t   "Do not automaticaly wrap text while typing
-set colorcolumn=80
-highlight ColorColumn ctermbg=233
-
-"Easier formatting of paragraphs
-vmap Q gq
-nmap Q gqap
-
-"Settings for vi undo history
-set history=700
-set undolevels=700
-
-"Python specific spatial settings
-set tabstop=4
-set softtabstop=4
-set shiftwidth=4
-set shiftround
-set expandtab
-
-"=========================================================================
-"Custom Function to toggle absolute/relative line numbering
-"=========================================================================
-function! NumberToggle()
-    if(&relativenumber == 1)
-        set number
-    else
-        set relativenumber
+" Custom functions
+" ================
+" Restores vim to the position in a last edited file. Uses ~/.viminfo for
+" figuring out the position
+function! ResCur()
+    if line ("'\"") <= line("$")
+        normal! g`"
+        return 1
     endif
-endfunc
-"=========================================================================
-"Set up a shortcut to activate the function
-set number
-nnoremap <Leader>r :call NumberToggle()<cr>
-
-
-"Python Debugging using ipdb
-map <Leader>b import ipdb as pdb; pdb.set_trace()<esc>:w<CR>
-
-"==============================================================================
-"Python IDE Setup
-"==============================================================================
-"Set up Pathogen - The Modern way to load Vim Plugins
-"Instructions : https://github.com/tpope/vim-pathogen
-"mkdir -p ~/.vim/; cd .vim; git clone git://github.com/tpope/vim-pathogen.git
-"
-call pathogen#infect()
-call pathogen#helptags()
-
-"Mapping NERDTree to <F2>
-map <F3> :NERDTree<cr>
-
-"Set up Powerline
-"Clone in ~/.vim/bundle
-"git clone git://github.com/tpope/vim-pathogen.git
-"Settings for powerline
-set rtp+=~/.vim/bundle/powerline/powerline/bindings/vim
-set laststatus=2
-
-"Setup python-mode
-"Clone in ~/.vim/bundle
-"git clone git://github.com/klen/python-mode.git
-"Settings for python-mode
-let g:pymode_rope_goto_def_newwin = "vnew"
-
-"omnicomplete
-set completeopt=longest,menuone
-function! OmniPopup(action)
-    if pumvisible()
-        if a:action == 'j'
-            return "\<C-N>"
-        elseif a:action == 'k'
-            return "\<C-P>"
-        endif
-    endif
-    return a:action
 endfunction
 
-inoremap <silent>j <C-R>=OmniPopup('j')<CR>
-inoremap <silent>k <C-R>=OmniPopup('k')<CR>
+augroup resCur
+    autocmd!
+    autocmd BufWinEnter * call ResCur()
+augroup END
+
+
+execute pathogen#infect()
+
+" For Solarized
+set background=dark
+colorscheme solarized
+
+" For vim-airline
+" For vim-markdown
