@@ -72,28 +72,32 @@ set undolevels=700
 " Custom Keymappings
 " ------------------
 " Useful when working with vimdiff. Lockdown one window while scrolling the other
-nmap <F5> :windo set scrollbind!<CR>
+nnoremap <F5> :windo set scrollbind!<CR>
 " ,r triggers the 'set number' setting
-nmap <leader>r :set number!<CR>
+nnoremap <leader>r :set number!<CR>
 "Better copy & paste
 nnoremap <F2> :set invpaste paste?<CR>
 set pastetoggle=<F2>
 " Highlight the current line ?
 noremap <leader>c :set cursorline!<CR>
 " Turn off highlighting after searches
-map <C-n> :nohl<CR>
+noremap <C-n> :nohl<CR>
 "Bind Ctrl+<movement> keys to move around the windows/tabs
-map <C-j> <C-w>j
-map <C-h> <C-w>h
-map <C-k> <C-w>k
-map <C-l> <C-w>l
-map <Leader>n <esc>:tabprevious<CR>
-map <Leader>m <esc>:tabnext<CR>
-map <Leader>w <esc>:set wrap!<CR>
+noremap <C-j> <C-w>j
+noremap <C-h> <C-w>h
+noremap <C-k> <C-w>k
+noremap <C-l> <C-w>l
+noremap <Leader>n <esc>:tabprevious<CR>
+noremap <Leader>m <esc>:tabnext<CR>
+noremap <Leader>w <esc>:set wrap!<CR>
 "Sizing the split Windows
-map <Leader>= <C-w>=
-map <Leader>[ <C-w>-
-map <Leader>] <C-w>+
+noremap <Leader>= <C-w>=
+noremap <Leader>[ <C-w>-
+noremap <Leader>] <C-w>+
+
+" Quick edit your vimrc
+nnoremap <Leader>ev :split $MYVIMRC<cr>
+nnoremap <Leader>sv :source $MYVIMRC<cr>
 
 if &listchars ==# 'eol:$'
   set listchars=tab:>\ ,trail:-,extends:>,precedes:<,nbsp:+
@@ -118,6 +122,9 @@ augroup resCur
     autocmd BufWinEnter * call ResCur()
 augroup END
 
+" wget -c http://www.ccs.neu.edu/home/dorai/scmindent/lispindent.lisp
+" Add lispindent.lisp to your path
+autocmd filetype lisp,scheme,art setlocal equalprg=lispindent.lisp
 
 execute pathogen#infect()
 
