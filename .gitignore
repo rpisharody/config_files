@@ -1,0 +1,6 @@
+# Ignore all of emacs.d -- has a lot of compiled/downloaded/on-the-fly stuff
+
+emacs.d/*
+*.elc
+# But, do not ignore these !!
+!emacs.d/init.el
