@@ -1,8 +1,3 @@
-;; Package Stuff
-(setq package-archives '(("melpa" . "http://melpa.milkbox.net/packages/")
-                         ("org" . "https://orgmode.org/elpa/")
-                         ("gnu" . "https://elpa.gnu.org/packages/")))
-
 ;; Windows only settings
 (if (string-equal system-type "windows-nt")
     (progn
@@ -27,43 +22,63 @@
 ;; Do not Save Backup files
 (setq make-backup-files nil)
 
+;; Pressing RET should do newline-and-indent
+(define-key global-map (kbd "RET") 'newline-and-indent)
+
+;; Black Theme - Wombat
+(load-theme 'wombat)
+
+;; Show matching parantheses
+(show-paren-mode 1)
+
+;; Packages Packages !!
+(require 'package)
+(package-initialize)
+(setq package-enable-at-startup nil)
+(setq package-archives '(("melpa" . "http://melpa.milkbox.net/packages/")
+                         ("org" . "https://orgmode.org/elpa/")
+                         ("gnu" . "https://elpa.gnu.org/packages/")))
+(unless (package-installed-p 'use-package)
+  (package-refresh-contents)
+  (package-install 'use-package))
+(require 'use-package)
+
 ;; Remember the cursor position of files when opening them
 (setq save-place-file "~/.emacs.d/saveplace")
 (setq-default save-place t)
 (require 'saveplace)
-
-;; Pressing RET should do newline-and-indent
-(define-key global-map (kbd "RET") 'newline-and-indent)
-
-(require 'package)
-(package-initialize)
+(setq save-place-forget-unreadable-files nil)
 
 ;; elsp-slime-navigator
-(require 'elisp-slime-nav)
-(defun my-lisp-hook ()
-  (elisp-slime-nav-mode)
-  (turn-on-eldoc-mode))
-(add-hook 'emacs-lisp-mode-hook 'my-lisp-hook)
-
-;; elpy : for Python
-(elpy-enable)
-(if (string-equal system-type "windows-nt")
-    (progn
-      (setq
-        elpy-rpc-python-command "C:/Python34/python.exe"
-        python-shell-interpreter "C:/Python34/Scripts/ipython.exe"))
-    (progn
-      (setq
-        elpy-rpc-python-command "/home/rrajan/utilities/bin/python3"
-        python-shell-interpreter "/home/rrajan/utilities/bin/ipython3")))
+(use-package elisp-slime-nav
+  :config
+    (defun my-lisp-hook ()
+      (elisp-slime-nav-mode)
+      (turn-on-eldoc-mode))
+    (add-hook 'emacs-lisp-mode-hook 'my-lisp-hook))
   
-;;(elpy-use-ipython)
+;; elpy for Python
+(use-package elpy
+  :config
+  (elpy-enable)
+  (if (string-equal system-type "windows-nt")
+      (progn
+        (setq
+          elpy-rpc-python-command "C:/Python34/python.exe"
+          python-shell-interpreter "C:/Python34/Scripts/ipython.exe"))
+      (progn
+        (setq
+          elpy-rpc-python-command "/home/rrajan/utilities/bin/python3"
+          python-shell-interpreter "/home/rrajan/utilities/bin/ipython3"))))
 
+(require 'evil)
+(evil-mode 1)
+        
 ;; Evil mode
 (require 'evil-leader)
 (global-evil-leader-mode)
-(require 'evil)
-(evil-mode 1)
+;(require 'evil)
+;(evil-mode 1)
 
 ;; Set the leader keys
 (evil-leader/set-leader (kbd ","))
@@ -74,8 +89,6 @@
 (evil-leader/set-key (kbd "v") 'split-window-right)
 (evil-leader/set-key (kbd "e") 'pp-eval-last-sexp)
 (evil-leader/set-key (kbd ",") 'other-window)
-(evil-leader/set-key (kbd "b") 'ibuffer)
-(evil-leader/set-key (kbd "x") 'helm-M-x)
 
 ;; Evil-mode Keybindings for moving between windows
 (define-key evil-normal-state-map (kbd "C-h") 'evil-window-left)
@@ -100,6 +113,29 @@
 ;; 
 ;; (setq large-file-warning-threshold 200000000)
 
+;; March 13th
+;; ****************
+;; New packages installed
+;; powerline
+;; powerline-evil
+;; helm-swoop
+;; use-package
+;; TODO
+;; ********** 
+;; Make evil mode work everywhere
+;; helm-swoop clear
+
+;; Powerline and evil-powerline settings
 (require 'powerline)
 (require 'powerline-evil)
 (powerline-evil-vim-theme)
+
+;; helm configurations
+(require 'helm)
+(require 'helm-config)
+(define-key helm-map (kbd "<tab>") 'helm-execute-persistent-action)
+(evil-leader/set-key (kbd "x") 'helm-M-x)
+(evil-leader/set-key (kbd "i") 'helm-swoop)
+(evil-leader/set-key (kbd "b") 'helm-buffers-list)
+(evil-leader/set-key (kbd "k") 'helm-show-kill-ring)
+(evil-leader/set-key (kbd "f") 'helm-find-files)
