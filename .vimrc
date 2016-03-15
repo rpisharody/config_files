@@ -95,6 +95,11 @@ noremap <Leader>= <C-w>=
 noremap <Leader>[ <C-w>-
 noremap <Leader>] <C-w>+
 
+noremap <C-l> :redraw!<CR>
+
+" ctags + Tagbar
+nnoremap <silent> <Leader>b :TagbarToggle<CR>
+
 " Quick edit your vimrc
 nnoremap <Leader>ev :split $MYVIMRC<cr>
 nnoremap <Leader>sv :source $MYVIMRC<cr>
@@ -105,6 +110,15 @@ endif
 if &t_Co == 8 && $TERM !~# '^linux'
   set t_Co=16
 endif
+
+" Python Specific Stuff
+" =====================
+let python_highlight_all = 1
+
+" Abbreviations
+" =============
+:iabbrev bp3 #!/usr/bin/env python3
+:iabbrev bp3m if __name__ == '__main__':<CR>main()
 
 " Custom functions
 " ================
@@ -126,7 +140,8 @@ augroup END
 " Add lispindent.lisp to your path
 autocmd filetype lisp,scheme,art setlocal equalprg=lispindent.lisp
 
-execute pathogen#infect()
+call pathogen#infect()
+call pathogen#helptags()
 
 " For Solarized
 set background=dark
@@ -134,3 +149,4 @@ colorscheme solarized
 
 " For vim-airline
 " For vim-markdown
+let g:vim_markdown_folding_disabled=1
