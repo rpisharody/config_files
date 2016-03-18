@@ -19,6 +19,7 @@ set expandtab
 set shiftwidth=4
 set tabstop=4
 set softtabstop=4
+set nowrap
 
 " Make vim work as expected during fast keypresses :P
 ca Q q
@@ -104,6 +105,18 @@ nnoremap <silent> <Leader>b :TagbarToggle<CR>
 nnoremap <Leader>ev :split $MYVIMRC<cr>
 nnoremap <Leader>sv :source $MYVIMRC<cr>
 
+" Fast edit $MYVIMRC
+nnoremap <Leader>ev :split $MYVIMRC<cr>
+nnoremap <Leader>sv :source $MYVIMRC<cr>
+nnoremap <Leader>l :redraw!<cr>
+nnoremap <Leader>d :<ESC>:r !date<cr>kdd0
+
+" Hard Mode on !
+" noremap <Up> <NOP>
+" noremap <Down> <NOP>
+" noremap <Left> <NOP>
+" noremap <Right> <NOP>
+" 
 if &listchars ==# 'eol:$'
   set listchars=tab:>\ ,trail:-,extends:>,precedes:<,nbsp:+
 endif
@@ -150,3 +163,4 @@ colorscheme solarized
 " For vim-airline
 " For vim-markdown
 let g:vim_markdown_folding_disabled=1
+let g:vim_markdown_math=1
