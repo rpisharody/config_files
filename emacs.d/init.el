@@ -49,6 +49,10 @@
 (require 'saveplace)
 (setq save-place-forget-unreadable-files nil)
 
+;; Line Numbers
+(global-linum-mode)
+(setq linum-format "%d ")
+
 ;; elsp-slime-navigator
 (use-package elisp-slime-nav
   :config
@@ -128,7 +132,7 @@
 ;; Powerline and evil-powerline settings
 (require 'powerline)
 (require 'powerline-evil)
-(powerline-evil-vim-theme)
+(powerline-evil-vim-color-theme)
 
 ;; helm configurations
 (require 'helm)
@@ -139,3 +143,18 @@
 (evil-leader/set-key (kbd "b") 'helm-buffers-list)
 (evil-leader/set-key (kbd "k") 'helm-show-kill-ring)
 (evil-leader/set-key (kbd "f") 'helm-find-files)
+
+
+;; TODO
+;; Add line numbers
+;; space between line numbers and text
+
+;; Org-mode setup
+;;================================================== 
+;; Turn on org-mode
+(require 'org)
+
+;; Standard keybindings
+(global-set-key (kbd "C-c l") 'org-store-link)
+(global-set-key (kbd "C-c i") 'org-insert-link)
+(global-set-key (kbd "C-c a") 'org-agenda)
