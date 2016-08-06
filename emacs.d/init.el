@@ -65,15 +65,23 @@
 (use-package elpy
   :config
   (elpy-enable)
-  (if (string-equal system-type "windows-nt")
-      (progn
-        (setq
+  (cond ((string-equal (system-name) "melkor")
+          (progn
+          (setq
+          elpy-rpc-python-command "/usr/bin/python3"
+          python-shell-interpreter "/usr/local/bin/ipython3")))
+  
+      ((string-equal system-type "windows-nt")
+          (progn
+          (setq
           elpy-rpc-python-command "C:/Python34/python.exe"
-          python-shell-interpreter "C:/Python34/Scripts/ipython.exe"))
-      (progn
-        (setq
+          python-shell-interpreter "C:/Python34/Scripts/ipython.exe")))
+  
+      (t
+          (progn
+          (setq
           elpy-rpc-python-command "/home/rrajan/utilities/bin/python3"
-          python-shell-interpreter "/home/rrajan/utilities/bin/ipython3"))))
+          python-shell-interpreter "/home/rrajan/utilities/bin/ipython3")))))
 
 (require 'evil)
 (evil-mode 1)
