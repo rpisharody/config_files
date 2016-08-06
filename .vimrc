@@ -1,54 +1,42 @@
-" Custom .vimrc for use by Rahul Pisharody
-" ========================================
-
-" Break away from vi behavior. Use vim behavior
-set nocompatible
-" Some general vim niceities !
+"Custom .vimrc file developed by Rahul Pisharody
+"================================================
+set showmode
 set visualbell
 set ttyfast
 set ruler
-set number
-syntax enable
-filetype plugin indent on
-set incsearch
-set ignorecase
-set hlsearch
-set smartcase
-set smartindent
-set expandtab
-set shiftwidth=4
-set tabstop=4
-set softtabstop=4
-set nowrap
+"set title
+"Not compatible with the old vi
+set nocompatible
 
-" Make vim work as expected during fast keypresses :P
-ca Q q
-ca Wq wq
-ca W w
-ca WQ wq
-ca q1 q!
-ca Q1 q!
-ca Qa qa
+"Automatic reloading of .vimrc
+autocmd! bufwritepost .vimrc source % 
 
-" Rebind <leader> ley to ,
-let mapleader = ","
-
-" Reload .vimrc when the file is saved
-autocmd! bufwritepost .vimrc source %
-
-" Wildcards while navigating help menu
+"Set wildcard patterns for navigating help menu
 set wildmenu
+
+nmap <F5> :windo set scrollbind!<CR>
+
+"Apparently, the default Vim Regex is broken. Perl/Python formatting 
+"will work
+"nnoremap / /\v
+"vnoremap / /\v
 
 "Set buffer Hidden. This means that you can have unwritten changes to a file
 "Open a new file with :e without being forced to write/undo your changes
 set hidden
 
-" Set backspace key to work as expected in all other applications
+"Setting proper working of backspace key
 set backspace=2
 
-" Natural splitting in vim
-set splitbelow
+"Natural Splitting
 set splitright
+set splitbelow
+
+"Better copy & paste
+nnoremap <F2> :set invpaste paste?<CR>
+set pastetoggle=<F2>
+set showmode
+set clipboard=unnamed
 
 " ===================================================================
 " From https://github.com/csswizardry/dotfiles/blob/master/.vimrc
@@ -57,110 +45,188 @@ set scrolloff=3
 set sidescrolloff=5
 " Scrolling sideways, scroll one character at a time
 set sidescroll=1
-" Always, always show a status line. Plays well with vim-airline
+" Always have a status line
 set laststatus=2
 " ===================================================================
 
-" Set the width of the term window
-set tw=79
-set fo-=t
-highlight ColorColumn ctermbg=233
+"Rebind <Leader> key
+let mapleader = ","
 
-" vim undo history settings
-set history=700
-set undolevels=700
+"Highlight the Current Line
+noremap <Leader>l :set cursorline!<CR>
+hi CursorLine cterm=NONE ctermbg=LightGrey ctermfg=black guibg=lightblue guifg=white
 
-" Custom Keymappings
-" ------------------
-" Useful when working with vimdiff. Lockdown one window while scrolling the other
-nnoremap <F5> :windo set scrollbind!<CR>
-" ,r triggers the 'set number' setting
-nnoremap <leader>r :set number!<CR>
-"Better copy & paste
-nnoremap <F2> :set invpaste paste?<CR>
-set pastetoggle=<F2>
-" Highlight the current line ?
-noremap <leader>c :set cursorline!<CR>
-" Turn off highlighting after searches
+"Set smart indentation
+set smartindent
+set autoindent
+
+"Searching and highlighting
+set ignorecase
+set smartcase
+set hlsearch
+set incsearch
 noremap <C-n> :nohl<CR>
+vnoremap <C-n> :nohl<CR>
+inoremap <C-n> :nohl<CR>
+
+"Redraw screen
+map <Leader>r :redraw!<CR>
+
+" Insert the present working directory into vim
+nnoremap <Leader>d <ESC>:r !pwd<CR><ESC>kJ$a
+
+"To Draw a line with '=' of the same width as the previous line
+nnoremap <Leader>1 yypVr=
+
+"Quicksave command
+"noremap <C-Z> :update<CR>
+"vnoremap <C-Z> <C-C>:update<CR>
+"inoremap <C-Z> <C-O>:update<CR>
+
+"Quick quit command
+noremap <Leader>e <esc>:quit<CR>    "Quit current window
+noremap <Leader>E <esc>:qa!<CR>     "Quit all windows
+
+
 "Bind Ctrl+<movement> keys to move around the windows/tabs
-noremap <C-j> <C-w>j
-noremap <C-h> <C-w>h
-noremap <C-k> <C-w>k
-noremap <C-l> <C-w>l
+" This should be taken care of by Chris Toomey's vim-tmux-navigate plugin
+" noremap <C-j> <C-w>j
+" noremap <C-h> <C-w>h
+" noremap <C-k> <C-w>k
+" noremap <C-l> <C-w>l
 noremap <Leader>n <esc>:tabprevious<CR>
 noremap <Leader>m <esc>:tabnext<CR>
 noremap <Leader>w <esc>:set wrap!<CR>
+
 "Sizing the split Windows
 noremap <Leader>= <C-w>=
-noremap <Leader>[ <C-w>-
-noremap <Leader>] <C-w>+
+noremap <Leader>- <C-w>-
+noremap <Leader>0 <C-w>+
 
-noremap <C-l> :redraw!<CR>
+"Map sort function to a key
+vnoremap <Leader>s :sort<CR>
 
-" ctags + Tagbar
-nnoremap <silent> <Leader>b :TagbarToggle<CR>
+"Easier indenting of codeblocks
+vnoremap < <gv
+vnoremap > >gv
 
-" Quick edit your vimrc
-nnoremap <Leader>ev :split $MYVIMRC<cr>
-nnoremap <Leader>sv :source $MYVIMRC<cr>
+"Mapping Q to q
+ca Q q
+ca Wq wq
+ca W w
+ca WQ wq
+ca q1 q!
+ca Q1 q!
+ca Qa qa
 
-" Fast edit $MYVIMRC
-nnoremap <Leader>ev :split $MYVIMRC<cr>
-nnoremap <Leader>sv :source $MYVIMRC<cr>
-nnoremap <Leader>l :redraw!<cr>
-nnoremap <Leader>d :<ESC>:r !date<cr>kdd0
-
-" Hard Mode on !
-" noremap <Up> <NOP>
-" noremap <Down> <NOP>
-" noremap <Left> <NOP>
-" noremap <Right> <NOP>
-" 
-if &listchars ==# 'eol:$'
-  set listchars=tab:>\ ,trail:-,extends:>,precedes:<,nbsp:+
+"Color Scheme
+"wget -o ~/.vim/colors/wombat256mod.vim 
+"http://www.vim.org/scripts/download_script.php?src_id=13400
+set t_Co=256
+if &term =~ '256color'
+    set t_ut=
 endif
-if &t_Co == 8 && $TERM !~# '^linux'
-  set t_Co=16
-endif
-
-" Python Specific Stuff
-" =====================
-let python_highlight_all = 1
-
-" Abbreviations
-" =============
-:iabbrev bp3 #!/usr/bin/env python3
-:iabbrev bp3m if __name__ == '__main__':<CR>main()
-
-" Custom functions
-" ================
-" Restores vim to the position in a last edited file. Uses ~/.viminfo for
-" figuring out the position
-function! ResCur()
-    if line ("'\"") <= line("$")
-        normal! g`"
-        return 1
-    endif
-endfunction
-
-augroup resCur
-    autocmd!
-    autocmd BufWinEnter * call ResCur()
-augroup END
-
-" wget -c http://www.ccs.neu.edu/home/dorai/scmindent/lispindent.lisp
-" Add lispindent.lisp to your path
-autocmd filetype lisp,scheme,art setlocal equalprg=lispindent.lisp
-
-call pathogen#infect()
-call pathogen#helptags()
-
-" For Solarized
+"color slate
+"colorscheme desert
 set background=dark
+syntax enable
+if ( has("gui_running") )
+    set background=light
+endif
+
+"Enable syntax highlighting
+filetype off
+filetype plugin indent on
+
+
+"Easier formatting of paragraphs
+vmap Q gq
+nmap Q gqap
+
+"Settings for vi undo history
+set history=700
+set undolevels=700
+
+"Python specific spatial settings
+set tabstop=4
+set softtabstop=4
+set shiftwidth=4
+set shiftround
+set expandtab
+
+set number
+set relativenumber
+
+let g:solarized_termtrans=1
 colorscheme solarized
 
-" For vim-airline
-" For vim-markdown
-let g:vim_markdown_folding_disabled=1
-let g:vim_markdown_math=1
+
+" RedHawk/Totem Abbreviations
+iabbrev GENCPM GENERATE_CPM 1
+
+
+" Vim-Plugins
+" Managed by vim-plug
+call plug#begin('~/.vim/plugged')
+
+" NERDTree
+Plug 'scrooloose/nerdtree', {'on': 'NERDTreeToggle'}
+" NERDTree Shortcuts
+map <Leader>f :NERDTreeToggle<CR>
+
+" tmux sane navigation
+Plug 'christoomey/vim-tmux-navigator'
+
+" Ctrl-P
+Plug 'ctrlpvim/ctrlp.vim'
+
+" vim-airline. Cool !
+Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
+let g:airline_theme='badwolf'
+let g:airline_powerline_fonts=1
+if !exists('g:airline_symbols')
+    let g:airline_symbols = {}
+    let g:airline_left_sep = '»'
+    let g:airline_left_sep = '▶'
+    let g:airline_right_sep = '«'
+    let g:airline_right_sep = '◀'
+    let g:airline_symbols.crypt = '🔒'
+    let g:airline_symbols.linenr = '␊'
+    let g:airline_symbols.linenr = '␤'
+    let g:airline_symbols.linenr = '¶'
+endif
+
+" Scratch buffer for Vim
+Plug 'mtth/scratch.vim'
+let g:scratch_persistence_file = '/home/rrajan/.scratch'
+
+Plug 'tpope/vim-surround'
+
+Plug 'dietsche/vim-lastplace'
+
+Plug 'tmhedberg/matchit'
+
+Plug 'vimwiki/vimwiki'
+let g:vimwiki_list = [{'path' : '/nfs/sjo2kanpur.home1/rrajan/notes', 'path_html' : '/nfs/sjo2kanpur.home1/rrajan/notes/export'}]
+
+Plug 'mattn/calendar-vim'
+nnoremap <Leader>c :Calendar<CR>
+nnoremap <Leader><Leader>d :put =strftime('%b %d %y')<CR>
+
+
+call plug#end()
+
+" Damian Conway - IBV 2013
+"Setting length
+"set tw=79
+"set nowrap  "Do not automatically wrap on load
+"set fo-=t   "Do not automaticaly wrap text while typing
+" highlight ColorColumn ctermbg=red
+" call matchadd('ColorColumn', '\%81v', 100)
+
+exec "set listchars=tab:\uBB\uBB,trail:\uB7,nbsp:~"
+set list
+
+nnoremap ; :
+highlight Comment term=bold ctermfg=magenta
