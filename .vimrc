@@ -65,9 +65,9 @@ set ignorecase
 set smartcase
 set hlsearch
 set incsearch
-noremap <C-n> :nohl<CR>
-vnoremap <C-n> :nohl<CR>
-inoremap <C-n> :nohl<CR>
+noremap <C-h> :nohl<CR>
+vnoremap <C-h> :nohl<CR>
+inoremap <C-h> :nohl<CR>
 
 "Redraw screen
 map <Leader>r :redraw!<CR>
@@ -154,7 +154,7 @@ set shiftwidth=4
 set shiftround
 set expandtab
 
-set number
+" set number
 set relativenumber
 
 let g:solarized_termtrans=1
@@ -163,6 +163,13 @@ colorscheme solarized
 
 " RedHawk/Totem Abbreviations
 iabbrev GENCPM GENERATE_CPM 1
+
+" Setup ctags file
+set tags=./tags,tags,$HOME
+
+" Setup spell check for Markdown files
+autocmd BufRead,BufNewFile *.md setlocal spell spelllang=en_us
+set complete+=kspell
 
 
 " Vim-Plugins
@@ -208,12 +215,15 @@ Plug 'dietsche/vim-lastplace'
 Plug 'tmhedberg/matchit'
 
 Plug 'vimwiki/vimwiki'
-let g:vimwiki_list = [{'path' : '/nfs/sjo2kanpur.home1/rrajan/notes', 'path_html' : '/nfs/sjo2kanpur.home1/rrajan/notes/export'}]
+let g:vimwiki_list = [{'path' : '/nfs/sjo2kanpur.home1/rrajan/notes',
+            \ 'syntax': 'markdown', 'ext': '.md',
+            \ 'path_html' : '/nfs/sjo2kanpur.home1/rrajan/notes/export'}]
+" I like to write vimwiki in Markdown
+autocmd BufNewFile,BufRead *.wiki set syntax=markdown
 
 Plug 'mattn/calendar-vim'
 nnoremap <Leader>c :Calendar<CR>
 nnoremap <Leader><Leader>d :put =strftime('%b %d %y')<CR>
-
 
 call plug#end()
 
@@ -222,8 +232,8 @@ call plug#end()
 "set tw=79
 "set nowrap  "Do not automatically wrap on load
 "set fo-=t   "Do not automaticaly wrap text while typing
-" highlight ColorColumn ctermbg=red
-" call matchadd('ColorColumn', '\%81v', 100)
+highlight ColorColumn ctermbg=red
+call matchadd('ColorColumn', '\%81v', 100)
 
 exec "set listchars=tab:\uBB\uBB,trail:\uB7,nbsp:~"
 set list
