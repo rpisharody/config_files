@@ -1,12 +1,12 @@
 "Custom .vimrc file developed by Rahul Pisharody
 "================================================
+"Not compatible with the old vi
+set nocompatible
 set showmode
 set visualbell
 set ttyfast
 set ruler
 "set title
-"Not compatible with the old vi
-set nocompatible
 
 "Automatic reloading of .vimrc
 autocmd! bufwritepost .vimrc source % 
@@ -171,9 +171,32 @@ set tags=./tags,tags,$HOME
 autocmd BufRead,BufNewFile *.md setlocal spell spelllang=en_us
 set complete+=kspell
 
+" Damian Conway - IBV 2013
+"Setting length
+"set tw=79
+"set nowrap  "Do not automatically wrap on load
+"set fo-=t   "Do not automaticaly wrap text while typing
+highlight ColorColumn ctermbg=red
+call matchadd('ColorColumn', '\%81v', 100)
 
+exec "set listchars=tab:\uBB\uBB,trail:\uB7,nbsp:~"
+set list
+
+nnoremap ; :
+highlight Comment term=bold ctermfg=magenta
+
+
+" All temporary aliases, commands are sourced from the following file
+if filereadable("~/.vimrc.tmp")
+    source ~/.vimrc.tmp
+endif
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Vim-Plugins
 " Managed by vim-plug
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 call plug#begin('~/.vim/plugged')
 
 " NERDTree
@@ -226,17 +249,3 @@ nnoremap <Leader>c :Calendar<CR>
 nnoremap <Leader><Leader>d :put =strftime('%b %d %y')<CR>
 
 call plug#end()
-
-" Damian Conway - IBV 2013
-"Setting length
-"set tw=79
-"set nowrap  "Do not automatically wrap on load
-"set fo-=t   "Do not automaticaly wrap text while typing
-highlight ColorColumn ctermbg=red
-call matchadd('ColorColumn', '\%81v', 100)
-
-exec "set listchars=tab:\uBB\uBB,trail:\uB7,nbsp:~"
-set list
-
-nnoremap ; :
-highlight Comment term=bold ctermfg=magenta
