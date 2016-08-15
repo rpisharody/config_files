@@ -67,7 +67,9 @@ set hlsearch
 set incsearch
 nnoremap <Leader>h :nohlsearch<CR>
 vnoremap <Leader>h :nohlsearch<CR>
-inoremap <Leader>h :nohlsearch<CR>
+
+nnoremap <BS> :nohlsearch<CR>
+vnoremap <BS> :nohlsearch<CR>
 
 "Redraw screen
 map <Leader>r :redraw!<CR>
@@ -187,8 +189,9 @@ highlight Comment term=bold ctermfg=magenta
 
 
 " All temporary aliases, commands are sourced from the following file
-if filereadable("~/.vimrc.tmp")
-    source ~/.vimrc.tmp
+let b:tmp_file = expand("~/.vimrc.tmp")
+if filereadable(b:tmp_file)
+    execute "source" . b:tmp_file
 endif
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
