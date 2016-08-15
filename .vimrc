@@ -9,7 +9,7 @@ set ruler
 "set title
 
 "Automatic reloading of .vimrc
-autocmd! bufwritepost .vimrc source % 
+autocmd! bufwritepost .vimrc source %
 
 "Set wildcard patterns for navigating help menu
 set wildmenu
@@ -65,9 +65,9 @@ set ignorecase
 set smartcase
 set hlsearch
 set incsearch
-noremap <C-h> :nohl<CR>
-vnoremap <C-h> :nohl<CR>
-inoremap <C-h> :nohl<CR>
+nnoremap <Leader>h :nohlsearch<CR>
+vnoremap <Leader>h :nohlsearch<CR>
+inoremap <Leader>h :nohlsearch<CR>
 
 "Redraw screen
 map <Leader>r :redraw!<CR>
