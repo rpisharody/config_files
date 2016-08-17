@@ -77,6 +77,10 @@ map <Leader>r :redraw!<CR>
 " Insert the present working directory into vim
 nnoremap <Leader>d <ESC>:r !pwd<CR><ESC>kJ$a
 
+" Insert today's date into the vim buffer with F5
+nnoremap <F5> "=strftime('%b %d %y')<CR>P
+inoremap <F5> <C-R>=strftime('%b %d %y')<CR>
+
 "To Draw a line with '=' of the same width as the previous line
 nnoremap <Leader>1 yypVr=
 
@@ -249,6 +253,5 @@ autocmd BufNewFile,BufRead *.wiki set syntax=markdown
 
 Plug 'mattn/calendar-vim'
 nnoremap <Leader>c :Calendar<CR>
-nnoremap <Leader><Leader>d :put =strftime('%b %d %y')<CR>
 
 call plug#end()
