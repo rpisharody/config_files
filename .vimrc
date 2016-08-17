@@ -163,8 +163,13 @@ set expandtab
 " set number
 set relativenumber
 
-let g:solarized_termtrans=1
-colorscheme solarized
+try
+    colorscheme solarized
+catch E185
+    colorscheme torte
+finally
+    let g:solarized_termtrans=1
+endtry
 
 
 " RedHawk/Totem Abbreviations
