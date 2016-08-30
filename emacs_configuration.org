@@ -1,0 +1,124 @@
+#+TITLE: Emacs Configuration
+#+STARTUP: indent hidestars
+
+** Set Personal Information
+#+BEGIN_SRC emacs-lisp
+  (setq user-full-name "Rahul Pisharody"
+        user-mail-address "rpisharody@gmail.com"
+        calendar-location-name "San Jose, CA")
+#+END_SRC
+
+#+BEGIN_SRC emacs-lisp
+
+;; Windows only settings
+(if (string-equal system-type "windows-nt")
+    (progn
+      (setq default-directory (concat (getenv "HOME") "/"))
+      (when (member "Monaco" (font-family-list))
+        (set-face-attribute 'default nil :font "Monaco"))))
+
+;; Disable Splash screen
+(setq inhibit-splash-screen t)
+
+;; Disable menu-bar, scroll-bar and tool-bar
+(menu-bar-mode -1)
+(toggle-scroll-bar -1)
+(tool-bar-mode -1)
+
+;; Better line-wrapping
+(visual-line-mode 1) 
+
+;; Use Space insted of TAB for indenting
+(setq-default tab-width 4 indent-tabs-mode nil)
+
+;; Do not Save Backup files
+(setq make-backup-files nil)
+
+;; Pressing RET should do newline-and-indent
+(define-key global-map (kbd "RET") 'newline-and-indent)
+
+;; Show matching parantheses
+(show-paren-mode 1)
+
+;; Packages Packages !!
+(require 'package)
+(package-initialize)
+(setq package-enable-at-startup nil)
+(setq package-archives '(("melpa" . "http://melpa.milkbox.net/packages/")
+                         ("org" . "http://orgmode.org/elpa/")
+                         ("gnu" . "http://elpa.gnu.org/packages/")))
+(unless (package-installed-p 'use-package)
+  (package-refresh-contents)
+  (package-install 'use-package))
+(require 'use-package)
+
+;; Remember the cursor position of files when opening them
+(setq save-place-file "~/.emacs.d/saveplace")
+(setq-default save-place t)
+(require 'saveplace)
+(setq save-place-forget-unreadable-files nil)
+
+
+;; emacs loads the octave mode by default.
+;; We just need to let it know that .m files are octave/MATLAB files
+;; (autoload 'octave-mode "octave-mod" nil t)
+(setq auto-mode-alist
+      (cons '("\\.m$" . octave-mode) auto-mode-alist))
+(add-hook 'octave-mode-hook
+          (lambda ()
+            (abbrev-mode 1)
+            (auto-fill-mode 1)
+            (if (eq window-system 'x)
+                (font-lock-mode 1))))
+
+(setq doc-view-continuous 1)
+#+END_SRC
+
+** My Utility Functions
+These functions are forays into the emacs-lisp world as well !
+#+BEGIN_SRC emacs-lisp
+(defun my/insert-line-before (times)
+  (interactive "p")
+  (save-excursion
+    (beginning-of-line 1)
+    (newline times)))
+(global-set-key (kbd "C-S-o")
+                'my/insert-line-before)
+#+END_SRC
+
+#+BEGIN_SRC emacs-lisp
+;; Custom Set Variables.
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(package-selected-packages (quote (use-package))))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
+#+END_SRC
+
+** COMMENT Org-mode
+I like the [[http://orgmode.org/manual/Clean-view.html][Org Clean View]] method of displaying the outlines
+Starting with usage of indentation at startup and hiding of leading stars
+in multi-level headings
+#+BEGIN_SRC emacs-lisp
+  (setq org-startup-indented t)
+  (setq org-hide-leading-stars t)
+#+END_SRC
+Show an outline of bullets instead of asterisks and arrows instead
+of ellipsis
+#+BEGIN_SRC emacs-lisp
+  (add-hook 'org-mode-hook
+            (lambda ()
+              (org-bullets-mode t)))
+  (setq org-ellipsis "⤵")
+#+END_SRC
+Would like to use syntax highlighting in source blocks while editing
+#+BEGIN_SRC emacs-lisp
+  (setq org-src-fontify-natively t)
+#+END_SRC
