@@ -32,9 +32,9 @@ set backspace=2
 set splitright
 set splitbelow
 
-"Better copy & paste
-nnoremap <F2> :set invpaste paste?<CR>
-set pastetoggle=<F2>
+"Better copy & paste from terminal Vims (which are all the vims I care about !)
+nnoremap <F11> :set invpaste paste?<CR>
+set pastetoggle=<F11>
 set showmode
 set clipboard=unnamed
 
@@ -65,8 +65,6 @@ set ignorecase
 set smartcase
 set hlsearch
 set incsearch
-nnoremap <Leader>h :nohlsearch<CR>
-vnoremap <Leader>h :nohlsearch<CR>
 
 nnoremap <BS> :nohlsearch<CR>
 vnoremap <BS> :nohlsearch<CR>
@@ -191,7 +189,7 @@ highlight ColorColumn ctermbg=red
 call matchadd('ColorColumn', '\%81v', 100)
 
 exec "set listchars=tab:\uBB\uBB,trail:\uB7,nbsp:~"
-set list
+autocmd BufRead,BufNewFile *.py,*.pl,*.c set list
 
 nnoremap ; :
 highlight Comment term=bold ctermfg=magenta
@@ -203,6 +201,32 @@ if filereadable(b:tmp_file)
     execute "source" . b:tmp_file
 endif
 
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Utility Functions
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+nnoremap <Leader>. :call CommaSeparate()<CR>
+let g:comma_separated = 0
+function! CommaSeparate()
+    "
+    " This is a function to toggle numbers to have comma separated view
+    " When the function is called, 1234 becomes 1,234
+    "
+    let l:winview = winsaveview()
+    if g:comma_separated
+        let g:comma_separated = 0
+        s/,//g
+    else
+        try
+            s/\(\d\)\(\(\d\d\d\)\+\d\@!\)\@=/\1,/g
+            let g:comma_separated = 1
+        catch E486
+            let g:comma_separated = 0
+        endtry
+    endif
+    call winrestview(l:winview)
+endfunction
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Vim-Plugins
