@@ -9,7 +9,9 @@ set ruler
 "set title
 
 "Automatic reloading of .vimrc
-autocmd! bufwritepost .vimrc source %
+augroup reload_vimrc
+    autocmd! bufwritepost .vimrc source %
+augroup end
 
 "Set wildcard patterns for navigating help menu
 set wildmenu
@@ -177,8 +179,10 @@ iabbrev GENCPM GENERATE_CPM 1
 set tags=./tags,tags,$HOME
 
 " Setup spell check for Markdown files
-autocmd BufRead,BufNewFile *.md setlocal spell spelllang=en_us
-set complete+=kspell
+augroup markdown_spellcheck
+    autocmd BufRead,BufNewFile *.md setlocal spell spelllang=en_us
+    set complete+=kspell
+augroup end
 
 " Damian Conway - IBV 2013
 "Setting length
@@ -188,8 +192,10 @@ set complete+=kspell
 highlight ColorColumn ctermbg=red
 call matchadd('ColorColumn', '\%81v', 100)
 
-exec "set listchars=tab:\uBB\uBB,trail:\uB7,nbsp:~"
-autocmd BufRead,BufNewFile *.py,*.pl,*.c set list
+augroup bad_whitespace
+    exec "set listchars=tab:\uBB\uBB,trail:\uB7,nbsp:~"
+    autocmd BufRead,BufNewFile *.py,*.pl,*.c set list
+augroup end
 
 nnoremap ; :
 highlight Comment term=bold ctermfg=magenta
