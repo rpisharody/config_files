@@ -283,4 +283,6 @@ autocmd BufNewFile,BufRead *.wiki set syntax=markdown
 Plug 'mattn/calendar-vim'
 nnoremap <Leader>c :Calendar<CR>
 
+Plug 'christoomey/vim-tmux-runner'
+
 call plug#end()
