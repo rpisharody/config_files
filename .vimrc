@@ -171,10 +171,6 @@ finally
     let g:solarized_termtrans=1
 endtry
 
-
-" RedHawk/Totem Abbreviations
-iabbrev GENCPM GENERATE_CPM 1
-
 " Setup ctags file
 set tags=./tags,tags,$HOME
 
