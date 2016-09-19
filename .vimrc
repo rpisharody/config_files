@@ -276,9 +276,7 @@ Plug 'dietsche/vim-lastplace'
 Plug 'tmhedberg/matchit'
 
 Plug 'vimwiki/vimwiki'
-let g:vimwiki_list = [{'path' : '/nfs/sjo2kanpur.home1/rrajan/notes',
-            \ 'syntax': 'markdown', 'ext': '.md',
-            \ 'path_html' : '/nfs/sjo2kanpur.home1/rrajan/notes/export'}]
+
 " I like to write vimwiki in Markdown
 autocmd BufNewFile,BufRead *.wiki set syntax=markdown
 
