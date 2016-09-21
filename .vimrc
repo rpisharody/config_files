@@ -124,6 +124,7 @@ ca WQ wq
 ca q1 q!
 ca Q1 q!
 ca Qa qa
+ca Q! q!
 
 "Color Scheme
 "wget -o ~/.vim/colors/wombat256mod.vim 
